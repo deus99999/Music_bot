@@ -23,12 +23,10 @@ async def text_message(message:types.Message):
     keyboard.add(InlineKeyboardButton(text="720p", callback_data=f"video|{0}|{1}"))
     keyboard.add(InlineKeyboardButton(text="Music", callback_data=f"music|{0}|{1}"))
 
-    if message.text.startswith("https://www.youtube.com"):
+    if message.text.startswith("https://www.youtube.com") or message.text.startswith("https://youtu.be"):
         await bot.send_message(chat_id, f"{yt.title}",
                                reply_markup=keyboard,
                                parse_mode="Markdown")
-
-
 
 
 @dp.message_handler(commands=["start"])
@@ -60,7 +58,6 @@ async def download_youtube_music(url, chat_id, bot):
         audio = yt.streams.get_audio_only()
         audio.download(f"{chat_id}", f"{yt.title}.mp3")
         print("file was open")
-
 
         with open(f"{chat_id}/{yt.title}.mp3", "rb") as music:
             await bot.send_audio(chat_id, music, parse_mode="Markdown")
